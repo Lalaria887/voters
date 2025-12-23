@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP Voter List & EPIC Search Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; }
+        .main-card { max-width: 500px; margin: 20px auto; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.15); border: 1px solid #ddd; }
+        .header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 25px; text-align: center; }
+        .tab-container { display: flex; background: #f8f9fa; border-bottom: 1px solid #ddd; }
+        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: bold; color: #555; transition: 0.3s; }
+        .tab.active { color: #e67e22; border-bottom: 4px solid #e67e22; background: white; }
+        .content { padding: 25px; display: none; min-height: 200px; }
+        .content.active { display: block; }
+        select, input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 2px solid #eee; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; margin-bottom: 10px; }
+        .btn-pdf { background-color: #e67e22; }
+        .btn-search { background-color: #2980b9; }
+        .btn-whatsapp { background-color: #25D366; display: flex; align-items: center; justify-content: center; text-decoration: none; margin-top: 10px; }
+        .footer { padding: 15px; font-size: 11px; text-align: center; color: #7f8c8d; background: #fafafa; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="header">
+        <h2 style="margin:0;">MP वोटर सेवा पोर्टल</h2>
+        <small>मध्य प्रदेश निर्वाचन आयोग सहायता केंद्र</small>
+    </div>
+
+    <div class="tab-container">
+        <div class="tab active" onclick="openTab(event, 'pdfSection')">ग्राम/वार्ड लिस्ट</div>
+        <div class="tab" onclick="openTab(event, 'searchSection')">Voter ID खोजें</div>
+    </div>
+
+    <div id="pdfSection" class="content active">
+        <label>अपना जिला चुनें:</label>
+        <select id="district">
+            <option value="">-- यहाँ क्लिक करें --</option>
+            <option value="agar">Agar-Malwa (आगर-मालवा)</option>
+            <option value="alirajpur">Alirajpur (अलीराजपुर)</option>
+            <option value="anuppur">Anuppur (अनूपपुर)</option>
+            <option value="bhopal">Bhopal (भोपाल)</option>
+            <option value="indore">Indore (इंदौर)</option>
+            <option value="gwalior">Gwalior (ग्वालियर)</option>
+            <option value="jabalpur">Jabalpur (जबलपुर)</option>
+            <option value="ujjain">Ujjain (उज्जैन)</option>
+            <option value="sagar">Sagar (सागर)</option>
+            <option value="rewa">Rewa (रीवा)</option>
+            <option value="satna">Satna (सतना)</option>
+            <option value="dhar">Dhar (धार)</option>
+            </select>
+        <button class="btn btn-pdf" onclick="openOfficial('pdf')">वोटर लिस्ट (PDF) देखें</button>
+    </div>
+
+    <div id="searchSection" class="content">
+        <label>Voter ID (EPIC) नंबर डालें:</label>
+        <input type="text" id="epicNum" placeholder="उदाहरण: ABC1234567" style="text-transform:uppercase">
+        <button class="btn btn-search" onclick="openOfficial('epic')">विवरण खोजें</button>
+    </div>
+
+    <div style="padding: 0 25px 25px 25px;">
+        <a href="javascript:void(0)" onclick="shareOnWhatsApp()" class="btn btn-whatsapp">
+             WhatsApp पर शेयर करें
+        </a>
+    </div>
+
+    <div class="footer">
+        यह एक निजी सहायता पोर्टल है। सभी डेटा सरकारी वेबसाइटों (CEO MP/ECI) से लिया जाता है।
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, content, tabs;
+        content = document.getElementsByClassName("content");
+        for (i = 0; i < content.length; i++) { content[i].classList.remove("active"); }
+        tabs = document.getElementsByClassName("tab");
+        for (i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    function openOfficial(type) {
+        if (type === 'pdf') {
+            if(document.getElementById("district").value === "") {
+                alert("कृपया जिला चुनें");
+                return;
+            }
+            window.open("https://ceoelection.mp.gov.in/VL.aspx", "_blank");
+        } else {
+            if(document.getElementById("epicNum").value === "") {
+                alert("कृपया Voter ID नंबर डालें");
+                return;
+            }
+            window.open("https://electoralsearch.eci.gov.in/", "_blank");
+        }
+    }
+
+    function shareOnWhatsApp() {
+        var text = "MP वोटर लिस्ट 2025 में अपना नाम देखने और PDF डाउनलोड करने के लिए इस लिंक का उपयोग करें: ";
+        var url = window.location.href;
+        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(text + url), "_blank");
+    }
+</script>
+
+</body>
+</html>
